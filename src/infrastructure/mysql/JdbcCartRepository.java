@@ -1,7 +1,6 @@
 package infrastructure.mysql;
 
 import domain.models.Cart;
-import domain.repositories.CartRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import repositories.CartRepository;
 
 public class JdbcCartRepository implements CartRepository {
     private final Connection conn;

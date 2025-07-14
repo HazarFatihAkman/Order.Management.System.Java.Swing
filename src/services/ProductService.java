@@ -1,9 +1,9 @@
 package services;
 
 import domain.models.Product;
-import domain.repositories.ProductRepository;
 import java.util.List;
 import java.util.UUID;
+import repositories.ProductRepository;
 
 public class ProductService {
     private final ProductRepository repo;

@@ -1,9 +1,9 @@
 package services;
 
 import domain.models.Customer;
-import domain.repositories.CustomerRepository;
 import java.util.List;
 import java.util.UUID;
+import repositories.CustomerRepository;
 
 public class CustomerService {
     private final CustomerRepository repo;

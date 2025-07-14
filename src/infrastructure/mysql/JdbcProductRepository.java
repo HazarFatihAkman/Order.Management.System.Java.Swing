@@ -1,7 +1,6 @@
 package infrastructure.mysql;
 
 import domain.models.Product;
-import domain.repositories.ProductRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import repositories.ProductRepository;
 
 public class JdbcProductRepository implements ProductRepository {
     private final Connection conn;

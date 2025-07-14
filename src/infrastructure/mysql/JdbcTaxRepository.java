@@ -1,7 +1,6 @@
 package infrastructure.mysql;
 
 import domain.models.Tax;
-import domain.repositories.TaxRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import repositories.TaxRepository;
 
 public class JdbcTaxRepository implements TaxRepository {
     private final Connection conn;

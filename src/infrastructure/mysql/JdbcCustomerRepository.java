@@ -2,8 +2,6 @@ package infrastructure.mysql;
 
 import domain.models.Cart;
 import domain.models.Customer;
-import domain.repositories.CartRepository;
-import domain.repositories.CustomerRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +10,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import repositories.CartRepository;
+import repositories.CustomerRepository;
 
 public class JdbcCustomerRepository implements CustomerRepository {
     private final Connection conn;

@@ -1,4 +1,4 @@
-package domain.repositories;
+package repositories;
 
 import domain.models.Cart;
 import java.util.List;

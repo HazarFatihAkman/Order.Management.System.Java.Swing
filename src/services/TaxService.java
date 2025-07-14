@@ -1,9 +1,9 @@
 package services;
 
 import domain.models.Tax;
-import domain.repositories.TaxRepository;
 import java.util.List;
 import java.util.UUID;
+import repositories.TaxRepository;
 
 public class TaxService {
     private final TaxRepository repo;

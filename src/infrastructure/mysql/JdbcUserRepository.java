@@ -1,12 +1,12 @@
 package infrastructure.mysql;
 
 import domain.models.User;
-import domain.repositories.UserRepository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+import repositories.UserRepository;
 
 public class JdbcUserRepository implements UserRepository {
     private final Connection conn;

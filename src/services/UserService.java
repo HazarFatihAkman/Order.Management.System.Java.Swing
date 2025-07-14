@@ -1,8 +1,8 @@
 package services;
 
 import domain.models.User;
-import domain.repositories.UserRepository;
 import java.util.UUID;
+import repositories.UserRepository;
 
 public class UserService {
     private final UserRepository repo;

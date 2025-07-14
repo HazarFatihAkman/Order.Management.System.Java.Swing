@@ -1,9 +1,9 @@
 package services;
 
 import domain.models.Cart;
-import domain.repositories.CartRepository;
 import java.util.List;
 import java.util.UUID;
+import repositories.CartRepository;
 
 public class CartService {
     private final CartRepository repo;
