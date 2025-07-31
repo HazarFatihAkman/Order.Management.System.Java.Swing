@@ -12,6 +12,7 @@ public class Customer {
     private List<Cart> carts;
 
     public Customer() {
+        id = UUID.randomUUID();
         carts = new ArrayList<>();
     }
 
@@ -57,5 +58,10 @@ public class Customer {
 
     public String getAddress() {
         return address;
+    }
+
+    @Override
+    public String toString() {
+        return fullName + "(" + phoneNumber + ")";
     }
 }

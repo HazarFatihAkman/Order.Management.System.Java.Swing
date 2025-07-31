@@ -10,20 +10,25 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import com.mysql.cj.protocol.Resultset;
+
 import repositories.CartRepository;
 import repositories.CustomerRepository;
 
 public class JdbcCustomerRepository implements CustomerRepository {
     private final Connection conn;
     private final String selectAllQuery = "SELECT " +
-                CustomerRepository.prefix + ".id AS id, " +
-                CustomerRepository.prefix + ".fullName, " +
-                CartRepository.prefix + ".id AS cartId, " +
-                CartRepository.prefix + ".price, " +
-                CartRepository.prefix + ".isPaid " +
-            "FROM " + CustomerRepository.prefix +
-            " LEFT JOIN " + CartRepository.prefix +
-            " ON " + CustomerRepository.prefix + ".id = " + CartRepository.prefix + ".userId ";
+            CustomerRepository.prefix + ".id AS id, " +
+            CustomerRepository.prefix + ".fullName, " +
+            CustomerRepository.prefix + ".phoneNumber, " +
+            CustomerRepository.prefix + ".address, " +
+            CartRepository.prefix + ".id AS cartId, " +
+            CartRepository.prefix + ".price, " +
+            CartRepository.prefix + ".isPaid " +
+        "FROM " + CustomerRepository.prefix +
+        " LEFT JOIN " + CartRepository.prefix +
+        " ON " + CustomerRepository.prefix + ".id = " + CartRepository.prefix + ".customerId ";
 
     public JdbcCustomerRepository(Connection conn) {
         this.conn = conn;
@@ -72,7 +77,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
     @Override
     public Customer getCustomerById(UUID id) {
         Customer customer = null;
-        String sql = selectAllQuery + "WHERE id = ?";
+        String sql = selectAllQuery + "WHERE " + CustomerRepository.prefix + ".id = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, id.toString());
@@ -80,9 +85,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
 
             if (rs.next()) {
                 if (customer == null) {
-                    customer = new Customer();
-                    customer.setId(UUID.fromString(rs.getString("id")));
-                    customer.setFullName(rs.getString("fullName"));
+                    customer = mapCustomer(rs);
                 }
 
                 Cart cart = mapCart(rs);
@@ -110,9 +113,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
 
             while (rs.next()) {
                 if (customer == null && !customers.contains(UUID.fromString(rs.getString("id")))) {
-                    customer = new Customer();
-                    customer.setId(UUID.fromString(rs.getString("id")));
-                    customer.setFullName(rs.getString("fullName"));
+                    customer = mapCustomer(rs);
                 }
 
                 Cart cart = mapCart(rs);
@@ -130,6 +131,15 @@ public class JdbcCustomerRepository implements CustomerRepository {
         }
 
         return customers;
+    }
+
+    private Customer mapCustomer(ResultSet rs) throws SQLException {
+        Customer customer = new Customer();
+        customer.setId(UUID.fromString(rs.getString("id")));
+        customer.setFullName(rs.getString("fullName"));
+        customer.setPhoneNumber((rs.getString("phoneNumber")));
+        customer.setAddress(rs.getString("address"));
+        return customer;
     }
 
     private Cart mapCart(ResultSet rs) throws SQLException {

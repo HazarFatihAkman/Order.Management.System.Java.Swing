@@ -18,7 +18,7 @@ public class CartService {
             return null;
         }
 
-        if (repo.getActiveCart(cart.getUserId()) != null) {
+        if (repo.getActiveCart(cart.getCustomerId()) != null) {
             System.out.println("Active Cart already exists");
             return cart;
         }
@@ -51,6 +51,10 @@ public class CartService {
         return cart;
     }
 
+    public List<Cart> getCarts() {
+        return repo.getCarts();
+    }
+
     public Cart getActiveCart(UUID userId) {
         return repo.getActiveCart(userId);
     }
@@ -60,6 +64,6 @@ public class CartService {
     }
 
     public List<Cart> getCartsByUserId(UUID userId) {
-        return repo.getCartsByUserId(userId);
+        return repo.getCartsByCustomerId(userId);
     }
 }

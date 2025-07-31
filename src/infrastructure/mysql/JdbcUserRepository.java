@@ -57,7 +57,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public User getUserById(UUID id) {
-        User user = new User();
+        User user = null;
         String sql = "SELECT * FROM " + UserRepository.prefix + " WHERE id = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -80,7 +80,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User login(String email, String password) {
         String sql = "SELECT * FROM " + UserRepository.prefix + " WHERE email = ? AND password = ?";
-        User user = new User();
+        User user = null;
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);

@@ -47,16 +47,32 @@ public class Product {
         this.taxExcPrice = taxExcPrice;
     }
 
-    public void setTaxIncPrice(double taxRate) {
+    public void calcTaxIncPrice(double taxRate) {
         if (taxRate <= 0) {
             throw new NullPointerException("Tax Rate should be greater than 0.0");
         }
 
-        taxIncPrice = taxExcPrice * (taxRate / 100);
+        taxIncPrice = taxExcPrice + (taxExcPrice * (taxRate / 100));
+    }
+
+    public void setTaxIncPrice(double taxIncPrice) {
+        if (taxIncPrice <= 0) {
+            throw new NullPointerException("Tax Rate should be greater than 0.0");
+        }
+
+        this.taxIncPrice = taxIncPrice;
     }
 
     public void setIsDeleted(boolean isDeleted) {
-        this. isDeleted = isDeleted;
+        this.isDeleted = isDeleted;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public UUID getId() {
@@ -81,5 +97,18 @@ public class Product {
 
     public boolean getIsDeleted() {
         return isDeleted;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    @Override
+    public String toString() {
+        return name + "(" + code + ") : " + taxIncPrice;
     }
 }

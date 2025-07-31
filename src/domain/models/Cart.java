@@ -6,10 +6,11 @@ import java.util.UUID;
 
 public class Cart {
     private UUID id;
-    private UUID userId;
-    private List<UUID> products;
+    private UUID customerId;
+    private List<Order> products; // id | quantity
     private double price;
     private boolean isPaid;
+    private Customer customer;
 
     public Cart() {
         id = UUID.randomUUID();
@@ -20,11 +21,11 @@ public class Cart {
         this.id = id;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setCustomerId(UUID customerId) {
+        this.customerId = customerId;
     }
 
-    public void setProducts(List<UUID> products) {
+    public void setProducts(List<Order> products) {
         this.products = products;
     }
 
@@ -36,15 +37,19 @@ public class Cart {
         this.isPaid = isPaid;
     }
 
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     public UUID getId() {
         return id;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public UUID getCustomerId() {
+        return customerId;
     }
 
-    public List<UUID> getProducts() {
+    public List<Order> getProducts() {
         return products;
     }
 
@@ -54,5 +59,9 @@ public class Cart {
 
     public boolean getIsPaid() {
         return isPaid;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 }

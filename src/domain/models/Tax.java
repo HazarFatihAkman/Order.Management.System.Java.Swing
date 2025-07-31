@@ -45,4 +45,9 @@ public class Tax {
     public double getRate() {
         return rate;
     }
+
+    @Override
+    public String toString() {
+        return name + " (" + rate + "%)";
+    }
 }

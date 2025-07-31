@@ -10,6 +10,7 @@ public interface ProductRepository {
     boolean save(Product product);
     boolean update(Product product);
     boolean markIsDeleted(UUID id);
+    boolean restore(UUID id);
     List<Product> getProducts();
     Product getProductById(UUID id);
     Product getProductByName(String name);

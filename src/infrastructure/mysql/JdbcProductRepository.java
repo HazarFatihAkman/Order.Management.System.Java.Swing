@@ -20,15 +20,17 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public boolean save(Product product) {
-        String sql = "INSERT INTO " + ProductRepository.prefix + " (id, name, taxExcPrice, taxIncPrice, taxId, isDeleted) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + ProductRepository.prefix + " (id, name, code, stock, taxExcPrice, taxIncPrice, taxId, isDeleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, product.getId().toString());
             stmt.setString(2, product.getName());
-            stmt.setDouble(3, product.getTaxExcPrice());
-            stmt.setDouble(4, product.getTaxIncPrice());
-            stmt.setString(5, product.getTaxId().toString());
-            stmt.setBoolean(6, product.getIsDeleted());
+            stmt.setString(3, product.getCode());
+            stmt.setInt(4, product.getStock());
+            stmt.setDouble(5, product.getTaxExcPrice());
+            stmt.setDouble(6, product.getTaxIncPrice());
+            stmt.setString(7, product.getTaxId().toString());
+            stmt.setBoolean(8, product.getIsDeleted());
 
             stmt.executeUpdate();
             stmt.close();
@@ -42,16 +44,18 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public boolean update(Product product) {
-        String sql = "UPDATE " + ProductRepository.prefix + " SET name = ?, taxExcPrice = ?, taxIncPrice = ?, taxId = ?, isDeleted = ? WHERE id = ?";
+        String sql = "UPDATE " + ProductRepository.prefix + " SET name = ?, code = ?, stock = ?, taxExcPrice = ?, taxIncPrice = ?, taxId = ?, isDeleted = ? WHERE id = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, product.getName());
-            stmt.setDouble(3, product.getTaxExcPrice());
-            stmt.setDouble(4, product.getTaxIncPrice());
-            stmt.setString(5, product.getTaxId().toString());
-            stmt.setBoolean(6, product.getIsDeleted());
-            stmt.setString(7, product.getId().toString());
-            
+            stmt.setString(2, product.getCode());
+            stmt.setInt(3, product.getStock());
+            stmt.setDouble(4, product.getTaxExcPrice());
+            stmt.setDouble(5, product.getTaxIncPrice());
+            stmt.setString(6, product.getTaxId().toString());
+            stmt.setBoolean(7, product.getIsDeleted());
+            stmt.setString(8, product.getId().toString());
+
             int effectedRows = stmt.executeUpdate();
             stmt.close();
             return effectedRows == 1;
@@ -64,6 +68,22 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public boolean markIsDeleted(UUID id) {
+        String sql = "UPDATE " + ProductRepository.prefix + " SET isDeleted = true WHERE id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id.toString());
+            int effectedRows = stmt.executeUpdate();
+            stmt.close();
+            return effectedRows == 1;
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean restore(UUID id) {
         String sql = "UPDATE " + ProductRepository.prefix + " SET isDeleted = false WHERE id = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -100,8 +120,8 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public Product getProductById(UUID id) {
+        Product product = null;
         String sql = "SELECT * FROM " + ProductRepository.prefix + " WHERE id = ?";
-        Product product = new Product();
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, id.toString());
@@ -122,7 +142,7 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public Product getProductByName(String name) {
-        Product product = new Product();
+        Product product = null;
         String sql = "SELECT * FROM " + ProductRepository.prefix + " WHERE name = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -146,6 +166,8 @@ public class JdbcProductRepository implements ProductRepository {
         Product product = new Product();
         product.setId(UUID.fromString(rs.getString("id")));
         product.setName(rs.getString("name"));
+        product.setCode(rs.getString("code"));
+        product.setStock(rs.getInt("stock"));
         product.setTaxExcPrice(rs.getDouble("taxExcPrice"));
         product.setTaxIncPrice(rs.getDouble("taxIncPrice"));
         product.setTaxId(UUID.fromString(rs.getString("taxId")));

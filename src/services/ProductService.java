@@ -55,6 +55,10 @@ public class ProductService {
         return repo.markIsDeleted(id);
     }
 
+    public boolean restore(UUID id) {
+        return repo.restore(id);
+    }
+
     public List<Product> getProducts() {
         return repo.getProducts();
     }

@@ -59,11 +59,12 @@ public class JdbcTaxRepository implements TaxRepository {
 
     @Override
     public List<Tax> getTaxes() {
-        List<Tax> taxes = new ArrayList<>();
+        List<Tax> taxes = null;
         String sql = "SELECT * FROM " + TaxRepository.prefix;
 
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
+            taxes = new ArrayList<>();
             while (rs.next()) {
                 taxes.add(mapTax(rs));
             }
@@ -80,12 +81,12 @@ public class JdbcTaxRepository implements TaxRepository {
     @Override
     public Tax getTaxByName(String name) {
         String sql = "SELECT * From " + TaxRepository.prefix + " WHERE name = ?";
+        Tax tax = null;
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, name);
 
             ResultSet rs = stmt.executeQuery();
-            Tax tax = new Tax();
 
             if (rs.next()) {
                 tax = mapTax(rs);
@@ -103,7 +104,7 @@ public class JdbcTaxRepository implements TaxRepository {
     @Override
     public Tax getTaxById(UUID id) {
         String sql = "SELECT * From " + TaxRepository.prefix + " WHERE id = ?";
-        Tax tax = new Tax();
+        Tax tax = null;
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, id.toString());
