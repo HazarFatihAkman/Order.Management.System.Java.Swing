@@ -92,7 +92,7 @@ public class CartUpdateUI extends MainFrame {
             }).toArray(Object[][]::new);
 
         Customer cartCustomer = customerService.getCustomerById(cart.getCustomerId());
-        JLabel customerFullNameLabel = new JLabel(cartCustomer.getFullName());
+        JLabel customerInfoLabel = new JLabel(cartCustomer.getFullName() + " | " + cartCustomer.getAddress() + " | " + cartCustomer.getPhoneNumber());
 
         JComboBox customerBox = new JComboBox<>(customers.toArray(new Customer[0]));
         customerBox.addActionListener(e -> {
@@ -168,7 +168,7 @@ public class CartUpdateUI extends MainFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(customerFullNameLabel, gbc);
+        panel.add(customerInfoLabel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
